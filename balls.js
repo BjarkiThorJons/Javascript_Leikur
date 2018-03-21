@@ -9,13 +9,26 @@ function random(min, max) {
   var num = Math.floor(Math.random() * (max - min + 1)) + min;
   return num;
 }
-var image = new Image();
-image.src = "myndir/player2.png"
+let bomber = new Image();
+bomber.src = "myndir/bomber.png"
 
+let bomber2 = new Image();
+bomber2.src = "myndir/bomber2.png"
+
+let player = function Player(x, y, velX, velY){
+  this.x = x;
+  this.y = y;
+  this.velX = velX;
+  this.velY = velY;
+  //function move{
+    
+    
+  //}
+}
 
 function Ball(x, y, velX, velY, color, size, bounce) {
   this.x = x;
-  this.y = 100;
+  this.y = 150;
   this.velX = velX;
   this.velY = velY;
   this.color = color;
@@ -72,26 +85,27 @@ Ball.prototype.collisionDetect = function() {
 
 var balls = [];
 var x = 0
-var max = 50
+var max = 100
 var yes = 1
 function loop() {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.50)';
   ctx.fillRect(0, 0, width, height);
+  if (x >= width-100){
+      yes = 0;
+    };
+    if (x <= 100){
+      yes = 1;
+    };
+    if (yes == 1){
+      x += 6;
+      ctx.drawImage(bomber2, x-260, 0, 446, 150);
 
+    }
+    else{
+      x -=6
+      ctx.drawImage(bomber, x-200, 0, 446, 150);
+    }
   while (balls.length < max) {
-  	if (x >= width-100){
-  		yes = 0;
-  	};
-  	if (x <= 100){
-  		yes = 1;
-  	};
-  	if (yes == 1){
-  		x += 6;
-  	}
-  	else{
-  		x -=6
-  	}
-  	
     var ball = new Ball(
       x,
       random(0,height),
@@ -102,14 +116,14 @@ function loop() {
       random(10,20)
     );
     balls.push(ball);
-  }
-  ctx.drawImage(image, x, 100);
+  };
   for (var i = 0; i < balls.length; i++) {
   	balls[i].draw();
 	balls[i].update();
     if (balls[i].bounce == 1){
     	 balls.splice(i,1)
     }
+
 	
   }
   requestAnimationFrame(loop);
