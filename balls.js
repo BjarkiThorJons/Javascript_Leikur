@@ -2,18 +2,24 @@ var canvas = document.querySelector('canvas');
 
 var ctx = canvas.getContext('2d');
 
-var width = canvas.width = window.innerWidth;
-var height = canvas.height = window.innerHeight;
+var width = canvas.width = window.innerWidth -20;
+var height = canvas.height = window.innerHeight - 20;
 
 function random(min, max) {
   var num = Math.floor(Math.random() * (max - min + 1)) + min;
   return num;
 }
+let background = new Image();
+background.src = "myndir/background.jpg"
+
 let bomber = new Image();
 bomber.src = "myndir/bomber.png"
 
 let bomber2 = new Image();
 bomber2.src = "myndir/bomber2.png"
+
+let bomb = new Image();
+bomb.src = "myndir/bomb.gif"
 
 let player = function Player(x, y, velX, velY){
   this.x = x;
@@ -26,9 +32,9 @@ let player = function Player(x, y, velX, velY){
   //}
 }
 
-function Ball(x, y, velX, velY, color, size, bounce) {
+function Ball(x,  velX, velY, color, size, bounce) {
   this.x = x;
-  this.y = 150;
+  this.y = 130;
   this.velX = velX;
   this.velY = velY;
   this.color = color;
@@ -37,30 +43,25 @@ function Ball(x, y, velX, velY, color, size, bounce) {
 }
 
 Ball.prototype.draw = function() {
+  ctx.drawImage(bomb, this.x, this.y, this.size, this.size);
   ctx.beginPath();
-  ctx.fillStyle = this.color;
-  ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
   ctx.fill();
 }
 
 Ball.prototype.update = function() {
   if ((this.x + this.size) >= width) {
-    this.velX = -(this.velX);
     this.bounce = 1;
   }
 
-  if ((this.x - this.size) <= 0) {
-    this.velX = -(this.velX);
+  if ((this.x - this.size) <= - 40) {
     this.bounce = 1;
   }
 
   if ((this.y + this.size) >= height) {
-    this.velY = -(this.velY);
     this.bounce = 1;
   }
 
   if ((this.y - this.size) <= 0) {
-    this.velY = -(this.velY);
     this.bounce = 1;
   }
 
@@ -83,13 +84,20 @@ Ball.prototype.collisionDetect = function() {
   }
 }
 
-var balls = [];
-var x = 0
-var max = 100
-var yes = 1
+let balls = [];
+let x = 0
+let max = 100
+let yes = 1
+let stig = 0
 function loop() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.50)';
-  ctx.fillRect(0, 0, width, height);
+  //ctx.fillRect(0, 0, width, height);
+  ctx.drawImage(background, 0, 0, width, height);
+  ctx.fillStyle = "white";
+  ctx.font = "60px Old English Text MT";
+  ctx.fillText(Math.round(stig),20,50)
+  max += 0.01
+  stig += 1
   if (x >= width-100){
       yes = 0;
     };
@@ -108,20 +116,21 @@ function loop() {
   while (balls.length < max) {
     var ball = new Ball(
       x,
-      random(0,height),
       random(-7,7),
-      random(1,7),
+      random(3,7),
       'rgb(255,0,0)',
       //'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
-      random(10,20)
+      40
     );
     balls.push(ball);
   };
+  
+  console.log(balls)
   for (var i = 0; i < balls.length; i++) {
   	balls[i].draw();
-	balls[i].update();
+	  balls[i].update();
     if (balls[i].bounce == 1){
-    	 balls.splice(i,1)
+    	balls.splice(i,1);
     }
 
 	
