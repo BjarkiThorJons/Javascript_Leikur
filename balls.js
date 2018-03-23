@@ -21,19 +21,34 @@ bomber2.src = "myndir/bomber2.png"
 let bomb = new Image();
 bomb.src = "myndir/bomb.gif"
 
-let player = function Player(x, y, velX, velY){
+let boat = new Image();
+boat.src = "myndir/boat.png"
+
+function Player(x, y, size, size2, velX, velY){
   this.x = x;
   this.y = y;
+  this.size = size;
+  this.size2 = size2;
   this.velX = velX;
   this.velY = velY;
-  //function move{
-    
-    
-  //}
 }
-
-function Ball(x,  velX, velY, color, size, bounce) {
-  this.x = x;
+Player.prototype.draw = function(){
+  ctx.drawImage(boat, this.x, this.y, this.size, this.size2);
+}
+Player.prototype.move = function(e){
+    switch(e.keyCode) {
+        case 37:
+          player.x -= 10;
+          console.log(player.x)
+          break;
+        case 39:
+          player.x += 10;
+          console.log(player.x)
+          break;
+    }   
+  }
+function Ball(x, velX, velY, color, size, bounce) {
+  this.x = x; 
   this.y = 130;
   this.velX = velX;
   this.velY = velY;
@@ -44,8 +59,6 @@ function Ball(x,  velX, velY, color, size, bounce) {
 
 Ball.prototype.draw = function() {
   ctx.drawImage(bomb, this.x, this.y, this.size, this.size);
-  ctx.beginPath();
-  ctx.fill();
 }
 
 Ball.prototype.update = function() {
@@ -84,9 +97,15 @@ Ball.prototype.collisionDetect = function() {
   }
 }
 
+player = new Player(
+  100,
+  height-50,
+  100,
+  28,
+  )
 let balls = [];
 let x = 0
-let max = 100
+let max = 0
 let yes = 1
 let stig = 0
 function loop() {
@@ -95,9 +114,11 @@ function loop() {
   ctx.drawImage(background, 0, 0, width, height);
   ctx.fillStyle = "white";
   ctx.font = "60px Old English Text MT";
-  ctx.fillText(Math.round(stig),20,50)
-  max += 0.01
-  stig += 1
+  ctx.fillText(Math.round(stig),20,50);
+  window.addEventListener("keydown", player.move, false);
+  player.draw();
+  max += 0.005;
+  stig += 1;
   if (x >= width-100){
       yes = 0;
     };
@@ -125,7 +146,6 @@ function loop() {
     balls.push(ball);
   };
   
-  console.log(balls)
   for (var i = 0; i < balls.length; i++) {
   	balls[i].draw();
 	  balls[i].update();
