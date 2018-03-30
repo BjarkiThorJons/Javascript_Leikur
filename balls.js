@@ -133,11 +133,14 @@ Ball.prototype.collisionDetect = function() {
       if (dx >= player.x && dx <= player.x + player.size){
           if (dy >= player.y && dy <= player.y + player.size2){
             max = 0
-            stig = 0
             player.x = 100
             x = 100
             //song.currentTime = 0
             explosionS.play();
+            if (stig > highScore){
+              highScore = stig
+            }
+            stig = 0
         }
       }
     }
@@ -155,12 +158,14 @@ let x = 0
 let max = 0
 let yes = 1
 let stig = 0
+let highScore = 0
 function loop() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.50)';
   ctx.drawImage(background, 0, 0, width, height);
   ctx.fillStyle = "white";
   ctx.font = "60px Old English Text MT";
   ctx.fillText(Math.round(stig),20,50);
+  ctx.fillText(Math.round(highScore),20,100);
   window.addEventListener("keydown", player.move, false);
   player.draw();
   if (max <= 10){
