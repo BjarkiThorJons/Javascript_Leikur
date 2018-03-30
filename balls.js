@@ -33,13 +33,16 @@ boat2.src = "myndir/boat2.png"
 let explosion = new Image();
 explosion.scr = "myndir/explosion.jpg"
 
+
 var song = document.createElement("audio");
 song.src = "audio/flight_of_the_bumblebee_2.mp3";
 song.loop = true;
+song.volume = 0.3
 song.play();
 
 var explosionS = document.createElement("audio");
 explosionS.src = "audio/Explosion.mp3";
+explosionS.volume = 0.2
 
 
 // Object constructor fyrir player
