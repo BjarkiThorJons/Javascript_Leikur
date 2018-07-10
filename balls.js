@@ -160,6 +160,7 @@ let yes = 1
 let stig = 0
 let highScore = 0
 function loop() {
+  song.play();
   ctx.fillStyle = 'rgba(0, 0, 0, 0.50)';
   ctx.drawImage(background, 0, 0, width, height);
   ctx.fillStyle = "white";
